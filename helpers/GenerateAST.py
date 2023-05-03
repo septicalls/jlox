@@ -6,15 +6,21 @@ def main():
     if len(argv) != 2:
         exit("Usage: generate_ast.py <output directory>")
 
-    types = [
+    ExprTypes = [
         "Binary   : Expr left, Token operator, Expr right",
         "Grouping : Expr expression",
         "Literal  : Object value",
         "Unary    : Token operator, Expr right",
     ]
 
+    StmtTypes = [
+        "Expression : Expr expression",
+        "Print      : Expr expression",
+    ]
+
     outputDir = argv[1]
-    defineAst(outputDir, "Expr", types)
+    defineAst(outputDir, "Expr", ExprTypes)
+    defineAst(outputDir, "Stmt", StmtTypes)
 
 
 def defineAst(outputDir: str, baseName: str, types: list) -> str:
