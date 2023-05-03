@@ -160,6 +160,8 @@ class Scanner {
             advance();
         }
 
+        advance();
+
         if (peek() == '/') {
             advance();
             return;
