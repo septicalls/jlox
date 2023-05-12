@@ -12,6 +12,7 @@ public class Lox {
     private static final Interpreter interpreter = new Interpreter();
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
+    static boolean runningPromt = false;
 
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
@@ -36,6 +37,9 @@ public class Lox {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
+        // To make REPL print all expressions.
+        runningPromt = true;
+
         for (;;) {
             System.out.print("> ");
             String line = reader.readLine();
@@ -53,7 +57,6 @@ public class Lox {
 
         if (hadError) return;
 
-        // System.out.println(new AstPrinter().print(expression));
         interpreter.interpret(statements);
     }
 
