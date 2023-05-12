@@ -11,11 +11,13 @@ def main():
         "Grouping : Expr expression",
         "Literal  : Object value",
         "Unary    : Token operator, Expr right",
+        "Variable : Token name",
     ]
 
     StmtTypes = [
         "Expression : Expr expression",
         "Print      : Expr expression",
+        "Var        : Token name, Expr initializer",
     ]
 
     outputDir = argv[1]
