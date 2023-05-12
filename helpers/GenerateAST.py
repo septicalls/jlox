@@ -7,6 +7,7 @@ def main():
         exit("Usage: generate_ast.py <output directory>")
 
     ExprTypes = [
+        "Assign   : Token name, Expr value",
         "Binary   : Expr left, Token operator, Expr right",
         "Grouping : Expr expression",
         "Literal  : Object value",
