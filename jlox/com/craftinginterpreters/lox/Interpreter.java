@@ -74,10 +74,19 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
             for (Stmt statement : statements) {
                 execute(statement);
-            } 
+            }
         } finally {
             this.environment = previous;
         }
+    }
+
+    @Override
+    public Void visitBreakStmt(Stmt.Break stmt) {
+        if (!Lox.inLoop) {
+            throw new RuntimeError(stmt.token, "Break statements can only be used in loops.");
+        }
+
+        throw new BreakException(stmt.token);
     }
 
     @Override
@@ -123,10 +132,16 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitWhileStmt(Stmt.While stmt) {
+        Lox.inLoop = true;
         while (isTruthy(evaluate(stmt.condition))) {
-            execute(stmt.body);
+            try {
+                execute(stmt.body);
+            } catch (BreakException exception) {
+                break;
+            }
         }
 
+        Lox.inLoop = false;
         return null;
     }
 

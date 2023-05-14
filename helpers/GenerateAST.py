@@ -18,6 +18,7 @@ def main():
 
     StmtTypes = [
         "Block      : List<Stmt> statements",
+        "Break      : Token token",
         "Expression : Expr expression",
         "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
         "Print      : Expr expression",
