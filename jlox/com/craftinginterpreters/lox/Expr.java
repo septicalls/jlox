@@ -7,6 +7,7 @@ abstract class Expr {
     interface Visitor<R> {
        R visitAssignExpr(Assign expr);
        R visitBinaryExpr(Binary expr);
+       R visitCommaExpr(Comma expr);
        R visitGroupingExpr(Grouping expr);
        R visitLiteralExpr(Literal expr);
        R visitLogicalExpr(Logical expr);
@@ -43,6 +44,23 @@ abstract class Expr {
 
         final Expr left;
         final Token operator;
+        final Expr right;
+    }
+
+    static class Comma extends Expr {
+        Comma (Expr left, Token comma, Expr right) {
+            this.left = left;
+            this.comma = comma;
+            this.right = right;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitCommaExpr(this);
+        }
+
+        final Expr left;
+        final Token comma;
         final Expr right;
     }
 

@@ -9,6 +9,7 @@ def main():
     ExprTypes = [
         "Assign   : Token name, Expr value",
         "Binary   : Expr left, Token operator, Expr right",
+        "Comma    : Expr left, Token comma, Expr right",
         "Grouping : Expr expression",
         "Literal  : Object value",
         "Logical  : Expr left, Token operator, Expr right",

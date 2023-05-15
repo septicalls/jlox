@@ -26,7 +26,11 @@ class Parser {
     }
 
     private Expr expression() {
-        return assignment();
+        Expr expr = assignment();
+        if (match(COMMA)) {
+            return comma(expr);
+        }
+        return expr;
     }
 
     private Stmt declaration() {
@@ -162,6 +166,13 @@ class Parser {
 
         consume(RIGHT_BRACE, "Expect '}' after block.");
         return statements;
+    }
+
+    private Expr comma(Expr left) {
+        Token comma = previous();
+        Expr right = expression();
+
+        return new Expr.Comma(left, comma, right);
     }
 
     private Expr assignment() {
