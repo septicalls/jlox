@@ -50,6 +50,7 @@ class Parser {
         if (match(IF)) return ifStatement();
         if (match(PRINT)) return printStatement();
         if (match(WHILE)) return whileStatement();
+        if (match(LEFT_PAREN)) return ternary();
         if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
         return expressionStatement();
@@ -118,6 +119,33 @@ class Parser {
         if (match(ELSE)) {
             elseBranch = statement();
         }
+
+        return new Stmt.If(condition, thenBranch, elseBranch);
+    }
+
+    private Stmt ternary() {
+        Expr condition = expression();
+        consume(RIGHT_PAREN, "Expect ')' after condition.");
+        Token thenToken = consume(QUESTION_MARK, "Expect '?' after ternary condition.");
+
+        Expr thenExp, elseExp;
+        Stmt thenBranch = null, elseBranch;
+        try {
+            thenExp = expression();
+            thenBranch = new Stmt.Expression(thenExp);
+        } catch (ParseError error) {
+            if (match(PRINT)) {
+                thenBranch = printStatement();
+            } else {
+                error(thenToken, "Invalid expression inside ternary operator.");
+            }
+        }
+        consume(COLON, "Expect ':' after 'then' expression.");
+        
+
+        elseExp = expression();
+        consume(SEMICOLON, "Expect ';' after 'else' expression.");
+        elseBranch = new Stmt.Expression(elseExp);
 
         return new Stmt.If(condition, thenBranch, elseBranch);
     }
@@ -291,7 +319,9 @@ class Parser {
         if (match(LEFT_PAREN)) {
             Expr expr = expression();
             consume(RIGHT_PAREN, "Expect ')' after expression.");
-            return new Expr.Grouping(expr);
+            if (peek() != QUESTION_MARK) {
+                return new Expr.Grouping(expr);
+            }
         }
 
         throw error(peek(), "Expect expression.");
@@ -362,5 +392,4 @@ class Parser {
         advance();
         }
     }
-
 }
