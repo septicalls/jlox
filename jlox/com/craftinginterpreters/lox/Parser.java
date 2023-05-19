@@ -27,14 +27,12 @@ class Parser {
 
     private Expr expression() {
         Expr expr = assignment();
-        if (match(COMMA)) {
-            return comma(expr);
-        }
         return expr;
     }
 
     private Stmt declaration() {
         try {
+            if (match(FUN)) return function("function");
             if (match(VAR)) return varDeclaration();
 
             return statement();
@@ -157,6 +155,28 @@ class Parser {
         return new Stmt.Expression(expr);
     }
 
+    private Stmt.Function function(String kind) {
+        Token name = consume(IDENTIFIER, "Expect " + kind + " name.");
+        consume(LEFT_PAREN, "Expect '(' after " + kind + " name.");
+        List<Token> parametres = new ArrayList<>();
+
+        if (!check(RIGHT_PAREN)) {
+            do {
+                if (parametres.size() >= 255) {
+                    error(peek(), "Can't have more than 255 parametres.");
+                }
+
+                parametres.add(
+                    consume(IDENTIFIER, "Expect parametre name."));
+            } while (match(COMMA));
+        }
+
+        consume(RIGHT_PAREN, "Expect ')' after parametres.");
+        consume(LEFT_BRACE, "Expect '{' before " + kind + " body.");
+        List<Stmt> body = block();
+        return new Stmt.Function(name, parametres, body);
+    }
+
     private List<Stmt> block() {
         List<Stmt> statements = new ArrayList<>();
 
@@ -166,13 +186,6 @@ class Parser {
 
         consume(RIGHT_BRACE, "Expect '}' after block.");
         return statements;
-    }
-
-    private Expr comma(Expr left) {
-        Token comma = previous();
-        Expr right = expression();
-
-        return new Expr.Comma(left, comma, right);
     }
 
     private Expr assignment() {
@@ -272,7 +285,34 @@ class Parser {
             return new Expr.Unary(operator, right);
         }
 
-        return primary();
+        return call();
+    }
+
+    private Expr finishCall(Expr callee) {
+        List<Expr> arguements = new ArrayList<>();
+
+        if (!check(RIGHT_PAREN)) {
+            do {
+                arguements.add(expression());
+            } while (match(COMMA));
+        }
+
+        Token paren = consume(RIGHT_PAREN, "Expect ')' after arguements.");
+        return new Expr.Call(callee, paren, arguements);
+    }
+
+    private Expr call() {
+        Expr expr = primary();
+
+        while (true) {
+            if (match(LEFT_PAREN)) {
+                expr = finishCall(expr);
+            } else {
+                break;
+            }
+        }
+
+        return expr;
     }
 
     private Expr primary() {
@@ -362,5 +402,4 @@ class Parser {
         advance();
         }
     }
-
 }
