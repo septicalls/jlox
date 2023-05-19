@@ -7,7 +7,7 @@ abstract class Expr {
     interface Visitor<R> {
        R visitAssignExpr(Assign expr);
        R visitBinaryExpr(Binary expr);
-       R visitCommaExpr(Comma expr);
+       R visitCallExpr(Call expr);
        R visitGroupingExpr(Grouping expr);
        R visitLiteralExpr(Literal expr);
        R visitLogicalExpr(Logical expr);
@@ -47,21 +47,21 @@ abstract class Expr {
         final Expr right;
     }
 
-    static class Comma extends Expr {
-        Comma (Expr left, Token comma, Expr right) {
-            this.left = left;
-            this.comma = comma;
-            this.right = right;
+    static class Call extends Expr {
+        Call (Expr callee, Token paren, List<Expr> arguements) {
+            this.callee = callee;
+            this.paren = paren;
+            this.arguements = arguements;
         }
 
         @Override
         <R> R accept(Visitor<R> visitor) {
-            return visitor.visitCommaExpr(this);
+            return visitor.visitCallExpr(this);
         }
 
-        final Expr left;
-        final Token comma;
-        final Expr right;
+        final Expr callee;
+        final Token paren;
+        final List<Expr> arguements;
     }
 
     static class Grouping extends Expr {
