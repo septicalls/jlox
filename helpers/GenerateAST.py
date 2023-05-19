@@ -9,7 +9,6 @@ def main():
     ExprTypes = [
         "Assign   : Token name, Expr value",
         "Binary   : Expr left, Token operator, Expr right",
-        "Comma    : Expr left, Token comma, Expr right",
         "Grouping : Expr expression",
         "Literal  : Object value",
         "Logical  : Expr left, Token operator, Expr right",
@@ -21,6 +20,7 @@ def main():
         "Block      : List<Stmt> statements",
         "Break      : Token token",
         "Expression : Expr expression",
+        "Function   : Token name, List<Token> params, List<Stmt> body",
         "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
         "Print      : Expr expression",
         "Var        : Token name, Expr initializer",
