@@ -51,13 +51,25 @@ public class Lox {
     }
 
     private static void run(String source) {
+        // Run the scanner.
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
+        
+        // Run the parser.
         Parser parser = new Parser(tokens);
         List<Stmt> statements = parser.parse();
 
+        // Stop if there was a syntax error.
         if (hadError) return;
 
+        // Run the resolver.
+        Resolver resolver = new Resolver(interpreter);
+        resolver.resolve(statements);
+
+        // Stop if there was a resolution error.
+        if (hadError) return;
+
+        // Run the interpreter.
         interpreter.interpret(statements);
     }
 
