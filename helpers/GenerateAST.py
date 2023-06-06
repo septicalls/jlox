@@ -22,6 +22,7 @@ def main():
     stmt_types = [
         "Block      : List<Stmt> statements",
         "Break      : Token token",
+        "Class      : Token name, List<Stmt.Function> methods",
         "Expression : Expr expression",
         "Function   : Token name, List<Token> params, List<Stmt> body",
         "If         : Expr condition, Stmt then_branch, Stmt else_branch",
@@ -63,8 +64,8 @@ def write_types(code_file, base_name, types):
         class_name = typ.split(":")[0].strip()
         field_list = typ.split(":")[1].strip()
 
-        code_file.write(f"    static class {class_name} extends {base_name} " + "{{\n")
-        code_file.write(f"        {class_name} ({field_list}) " + "{{\n")
+        code_file.write(f"    static class {class_name} extends {base_name} " + "{\n")
+        code_file.write(f"        {class_name} ({field_list}) " + "{\n")
 
         fields = field_list.split(", ")
         for field in fields:
@@ -73,7 +74,7 @@ def write_types(code_file, base_name, types):
 
         code_file.write("        }\n\n")
         code_file.write("        @Override\n")
-        code_file.write(f"        <R> R accept(Visitor<R> visitor) {{\n")
+        code_file.write("        <R> R accept(Visitor<R> visitor) {\n")
         code_file.write(f"            return visitor.visit{class_name}{base_name}(this);\n")
         code_file.write("        }\n\n")
 
