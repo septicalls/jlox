@@ -57,9 +57,6 @@ class Parser {
     private Stmt breakStatement() {
         Token token = previous();
         consume(SEMICOLON, "Expect ';' after 'break'.");
-        if (!Lox.inLoop) {
-            error(token, "Expect 'break' inside loop body.");
-        }
         return new Stmt.Break(token);
     }
 
@@ -87,7 +84,6 @@ class Parser {
         }
         consume(RIGHT_PAREN, "Expect ')' after for clauses.");
 
-        Lox.inLoop = true;
         Stmt body = statement();
 
         if (increment != null) {
@@ -103,7 +99,6 @@ class Parser {
         if (initializer != null)
         body = new Stmt.Block(Arrays.asList(initializer, body));
 
-        Lox.inLoop = false;
         return body;
     }
 
@@ -151,13 +146,11 @@ class Parser {
     }
 
     private Stmt whileStatement() {
-        Lox.inLoop = true;
         consume(LEFT_PAREN, "Expect '(' after 'while'.");
         Expr condition = expression();
         consume(RIGHT_PAREN, "Expect ')' after while condition.");
         Stmt body = statement();
 
-        Lox.inLoop = false;
         return new Stmt.While(condition, body);
     }
 
