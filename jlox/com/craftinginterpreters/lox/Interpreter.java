@@ -106,7 +106,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitBreakStmt(Stmt.Break stmt) {
-        throw new BreakException(stmt.token);
+        throw new Break(stmt.token);
     }
 
     @Override
@@ -170,7 +170,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         while (isTruthy(evaluate(stmt.condition))) {
             try {
                 execute(stmt.body);
-            } catch (BreakException exception) {
+            } catch (Break exception) {
                 break;
             }
         }
