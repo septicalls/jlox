@@ -11,7 +11,7 @@ def main():
     expr_types = [
         "Assign   : Token name, Expr value",
         "Binary   : Expr left, Token operator, Expr right",
-        "Call     : Expr callee, Token paren, List<Expr> arguments",
+        "Call     : Expr callee, Token paren, List<Expr> arguements",
         "Grouping : Expr expression",
         "Literal  : Object value",
         "Logical  : Expr left, Token operator, Expr right",
@@ -25,7 +25,7 @@ def main():
         "Class      : Token name, List<Stmt.Function> methods",
         "Expression : Expr expression",
         "Function   : Token name, List<Token> params, List<Stmt> body",
-        "If         : Expr condition, Stmt then_branch, Stmt else_branch",
+        "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
         "Print      : Expr expression",
         "Return     : Token keyword, Expr value",
         "Var        : Token name, Expr initializer",
