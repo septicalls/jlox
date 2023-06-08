@@ -12,6 +12,7 @@ def main():
         "Assign   : Token name, Expr value",
         "Binary   : Expr left, Token operator, Expr right",
         "Call     : Expr callee, Token paren, List<Expr> arguements",
+        "Comma    : Expr left, Token comma, Expr right",
         "Get      : Expr object, Token name",
         "Grouping : Expr expression",
         "Literal  : Object value",

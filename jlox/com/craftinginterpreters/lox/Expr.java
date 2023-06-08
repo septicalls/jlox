@@ -8,6 +8,7 @@ abstract class Expr {
         R visitAssignExpr(Assign expr);
         R visitBinaryExpr(Binary expr);
         R visitCallExpr(Call expr);
+        R visitCommaExpr(Comma expr);
         R visitGetExpr(Get expr);
         R visitGroupingExpr(Grouping expr);
         R visitLiteralExpr(Literal expr);
@@ -65,6 +66,23 @@ abstract class Expr {
         final Expr callee;
         final Token paren;
         final List<Expr> arguements;
+    }
+
+    static class Comma extends Expr {
+        Comma (Expr left, Token comma, Expr right) {
+            this.left = left;
+            this.comma = comma;
+            this.right = right;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitCommaExpr(this);
+        }
+
+        final Expr left;
+        final Token comma;
+        final Expr right;
     }
 
     static class Get extends Expr {
