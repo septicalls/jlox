@@ -64,6 +64,7 @@ class Parser {
         if (match(PRINT)) return printStatement();
         if (match(RETURN)) return returnStatement();
         if (match(WHILE)) return whileStatement();
+        if (match(LEFT_PAREN)) return ternary();
         if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
         return expressionStatement();
@@ -128,6 +129,30 @@ class Parser {
             elseBranch = statement();
         }
 
+        return new Stmt.If(condition, thenBranch, elseBranch);
+    }
+
+    private Stmt ternary() {
+        Expr condition = expression();
+        consume(RIGHT_PAREN, "Expect ')' after condition.");
+        consume(QUESTION_MARK, "Expect '?' after ternary condition.");
+
+        Stmt thenBranch;
+        if (match(PRINT)) {
+            thenBranch = new Stmt.Print(expression());
+        } else {
+            thenBranch = new Stmt.Expression(expression());
+        }
+        consume(COLON, "Expect ':' after 'then' expression.");
+
+        Stmt elseBranch;
+        if (match(PRINT)) {
+            elseBranch = new Stmt.Print(expression());
+        } else {
+            elseBranch = new Stmt.Expression(expression());
+        }
+        consume(SEMICOLON, "Expect ';' after 'else' expression.");
+        
         return new Stmt.If(condition, thenBranch, elseBranch);
     }
 
