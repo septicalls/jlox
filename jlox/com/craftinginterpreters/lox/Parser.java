@@ -11,6 +11,7 @@ class Parser {
 
     private final List<Token> tokens;
     private int current = 0;
+    private boolean inCall = false;
 
     Parser(List<Token> tokens) {
         this.tokens = tokens;
@@ -27,6 +28,9 @@ class Parser {
 
     private Expr expression() {
         Expr expr = assignment();
+        if (check(COMMA) && !inCall) {
+            return comma(expr);
+        }
         return expr;
     }
 
@@ -336,15 +340,24 @@ class Parser {
         return call();
     }
 
+    private Expr comma(Expr left) {
+        Token comma = advance();
+        Expr right = expression();
+
+        return new Expr.Comma(left, comma, right);
+    }
+
     private Expr finishCall(Expr callee) {
         List<Expr> arguements = new ArrayList<>();
 
+        inCall = true;
         if (!check(RIGHT_PAREN)) {
             do {
                 arguements.add(expression());
             } while (match(COMMA));
         }
 
+        inCall = false;
         Token paren = consume(RIGHT_PAREN, "Expect ')' after arguements.");
         return new Expr.Call(callee, paren, arguements);
     }

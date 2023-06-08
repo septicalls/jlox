@@ -308,6 +308,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Object visitCommaExpr(Expr.Comma expr) {
+        evaluate(expr.left);
+        return evaluate(expr.right);
+    }
+
+    @Override
     public Object visitGetExpr(Expr.Get expr) {
         Object object = evaluate(expr.object);
         if (object instanceof LoxInstance) {
