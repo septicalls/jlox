@@ -64,6 +64,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
                     "A class can't inherit from itself.");
             } else {
                 currentClass = ClassType.SUBCLASS;
+                resolve(stmt.superclass);
                 beginScope();
                 scopes.peek().put("super", true);
             }
