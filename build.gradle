@@ -3,7 +3,7 @@ plugins {
 }
 
 sourceSets {
-    main.java.srcDirs = ['jlox']
+    main.java.srcDirs = ['src']
 }
 
 jar {
