@@ -12,6 +12,11 @@ My implementation of jlox as described by Robert Nystrom in [crafting interprete
     cd jlox/
     ```
 
+3. Build the project:
+    ```
+    ./gradlew build
+    ```
+
 2. *nix users:
     ```
     chmod +x jlox.sh
