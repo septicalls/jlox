@@ -8,6 +8,5 @@
 build
 bin
 
-# Test lox code
-*.lox
-!lox_scripts/*.lox
+# Python scripting stuff
+__pycache__
