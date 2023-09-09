@@ -17,16 +17,19 @@ My implementation of jlox as described by Robert Nystrom in [crafting interprete
     ./gradlew build
     ```
 
-2. *nix users:
+2. Linux, MacOS, and BSD users:
     ```
     chmod +x jlox.sh
     ./jlox.sh [script.lox]
     ```
 
-    Windows users: Right-click on `jlox.bat` and select "Run" to execute it.
+    Windows users: Right-click on `jlox.bat` and click on "Run" to execute it.
+## Benchmarking
+
+Run `python benchmark.py` with after building the project.
 
 ## Features
-- Supports reading user input with native functions `scanNum()` that returns a double, and `scanText()` that returns a String.
+- Supports reading user input with native functions `scanNum()` (that returns a double), and `scanText()` (that returns a String).
 - Rewrote GenerateAST.java in Python.
 
 ## Challenges
