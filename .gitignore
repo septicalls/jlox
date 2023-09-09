@@ -10,3 +10,4 @@ bin
 
 # Test lox code
 *.lox
+!lox_scripts/*.lox
